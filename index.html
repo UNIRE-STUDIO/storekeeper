@@ -1,0 +1,76 @@
+<html lang="ru">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Кладовщик</title>
+        <script>
+            let cssId = 'myCss';  // you could encode the css path itself to generate id..
+            const main = 'assets/main.css';
+            const mobileStyle = 'assets/main.css';
+
+            // В зависимости от устройства подключаем разные таблицы стилей
+            var uagent = navigator.userAgent.toLowerCase();
+            let currentStyle = (uagent.search("android") > -1) ? mobileStyle : main;
+            if (!document.getElementById(cssId))
+                {
+                    var head  = document.getElementsByTagName('head')[0];
+                    var link  = document.createElement('link');
+                    link.id   = cssId;
+                    link.rel  = 'stylesheet';
+                    link.type = 'text/css';
+                    link.href = currentStyle;
+                    link.media = 'all';
+                    head.appendChild(link);
+                }
+        </script>
+        <!--Запретить масштабирование-->
+        <meta name="viewport" content="user-scalable=no">
+    </head>
+    <body>
+        <div id="page">
+            <div id="central-part">
+                <div id="header-panel">
+                    <div class="back-button-wrapper">
+                        <button class="button" id="home-button" name="home" type="button">⌂</button>
+                        <button class="button" id="back-button" name="back" type="button">⬅</button>
+                        <button class="button" id="pause-button" name="pause" type="button">❚❚</button>
+                    </div>
+                    <div class="h-wrapper">
+                        <p id="menu-lable">КЛАДОВЩИК</p>
+                        <p id="score-lable">0</p>
+                        <p id="game-over-lable">Проигрышь</p>
+                    </div>
+                    <div class="right-part">
+                        <p id="sublevel-lable">Уровень 1/10</p>
+                    </div>
+                </div>
+                <!-- ----------------------------------------- -->
+                <div id="main-content-wrapper">
+                    <canvas id="myCanvas" width="512" height="640"></canvas>
+                    <div id="content-center-wrapper">
+                        <div class="panel-wrapper" id="menu-wrapper">
+                            <button class="button" id="start-button" name="continue" type="button">НАЧАТЬ ИГРУ</button> 
+                        </div>
+                        <div id="game-wrapper">
+                        </div>
+                        <div id="pause-wrapper">
+                            <p class="panel-label">Пауза</p>
+                            <button class="button" id="continue-button" name="continue" type="button">ПРОДОЛЖИТЬ</button> 
+                        </div>
+                        <div id="game-over-wrapper">
+                            <p class="panel-label" id="you-lose">Вы проиграли</p>
+                            <button class="button" id="restart-button" name="restart" type="button">РЕСТАРТ</button>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <span class="footer-label" id="size-map">16х20</span>
+                        <span class="footer-label" id="version">версия: 0.1</span>
+                    </div>
+                </div>
+            </div>
+            <div id="side-part">
+
+            </div>
+        </div>
+        <script type="module" src="assets/game.js"></script>
+    </body>
+</html>
