@@ -76,8 +76,6 @@ body{
     width: 100px;
 }
 #central-part{
-    height: 740px;
-    width: 512px;
     display: flex;
     flex-direction: column;
 }
@@ -89,7 +87,6 @@ body{
 }
 
 #content-center-wrapper{
-    height: 640px;
     display: flex;
     justify-content: center;
     flex-direction: column;

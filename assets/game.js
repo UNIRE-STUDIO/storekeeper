@@ -3,13 +3,15 @@ import Input from "./input.js";
 import UI_Controller from "./ui_controller.js";
 import LevelManager from "./LevelManager/levelManager.js";
 import SaveManager from "./saveManager.js";
+import Config from "./config.js";
 export let GameScreens = {MENU: 0, PLAY: 1, PAUSE: 2, GAMEOVER: 3};
 
 export default class Game
 {
     constructor()
     {
-        this.ui_controller = new UI_Controller();
+        this.config = new Config();
+        this.ui_controller = new UI_Controller(this.config);
         this.currentScreen;
         this.changeScreen(0);
 
@@ -21,7 +23,7 @@ export default class Game
         this.input.changeScreenEvent = this.changeScreen.bind(this);
         this.input.startGameEvent = this.startGame.bind(this);
 
-        this.levelManager = new LevelManager(this.input); // Создавать сразу?
+        this.levelManager = new LevelManager(this.input, this.config); // Создавать сразу?
         this.levelManager.gameOverEvent = this.changeScreen.bind(this, GameScreens.GAMEOVER);
         this.levelManager.saveManager = this.saveManager;
     }
@@ -73,6 +75,7 @@ export default class Game
     render(lag)
     {
         if (this.currentScreen == GameScreens.MENU) return;
+        this.config.ctx.clearRect(0, 0, this.config.canvas.width, this.config.canvas.height);
 
         this.levelManager.render();
     }

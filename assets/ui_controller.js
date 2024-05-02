@@ -4,7 +4,7 @@ export let UISections = {MENU: 0, LEVEL_SELECTION: 1, PLAY: 2, PAUSE: 3, GAMEOVE
 
 export default class UI_Controller
 {
-    constructor()
+    constructor(config)
     {
         this.currentSection;
         this.ui_elements = [
@@ -20,9 +20,15 @@ export default class UI_Controller
                             document.getElementById("game-over-wrapper"),
                             document.getElementById("game-over-lable")])
                                                                         ];                                              
-
-        this.timerBar;
-    }
+        
+        this.config = config;
+        this.canvas = document.getElementById('myCanvas');
+        this.canvas.width = this.config.grid * this.config.sizeMap.x;
+        this.canvas.height = this.config.grid * this.config.sizeMap.y;
+        document.getElementById('size-map').innerHTML = this.config.sizeMap.x + "x" + this.config.sizeMap.y; 
+        document.getElementById('content-center-wrapper').style.height = this.canvas.height;
+        document.getElementById('central-part').style.width = this.canvas.width;
+}
 
     turnOnSection(section)
     {

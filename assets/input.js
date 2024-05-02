@@ -29,6 +29,7 @@ export default class Input
         this.changeScreenEvent;
         this.startGameEvent;
         this.moveXEvent;
+        this.rotateEvent;
     }
 
     backButton_click()
@@ -61,6 +62,10 @@ export default class Input
         if (e.code === "ArrowLeft")
         {
             this.moveXEvent(-1);
+        }
+        if (e.code === "ArrowUp" || e.code === "Space")
+        {
+            this.rotateEvent();
         }
     }
 
