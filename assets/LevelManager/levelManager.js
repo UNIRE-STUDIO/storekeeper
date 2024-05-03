@@ -57,7 +57,6 @@ export default class LevelManager
     gameOver()
     {
         console.log("game-over");
-        
         this.gameOverEvent();
     }    
     
@@ -110,14 +109,13 @@ export default class LevelManager
         }
         this.targetShape.shape = rotatedShape;
     }
-
     
-    skipFall()
+    skipFall() // Проблема не тут
     {
         if (this.targetShape.position.y < 0) return;
+
         for (let i = this.targetShape.position.y; i < this.glass.length; i++) 
         {
-            if (this.targetShape.position.y + i < 0) continue;
             for (let j = 0; j < this.targetShape.shape[0].length; j++) {
                 if (this.glass[i][this.targetShape.position.x + j] == 1)
                 {
@@ -143,7 +141,7 @@ export default class LevelManager
                     return;
                 }
                 this.glass[this.targetShape.position.y + i][this.targetShape.position.x + j] = 1;
-                console.log("addShapeInGlass"); // Проблема не тут
+                 // Проблема не тут
             }
         }
 
@@ -167,40 +165,44 @@ export default class LevelManager
         // Выполняется один раз
     }
 
-    spawnShape()
+    spawnShape() // Проблема не тут
     {
         this.targetShape.position = {x:7, y: -3}
         this.targetShape.shape = this.shapes[randomRange(0,this.shapes.length)];
         this.targetShape.active = true;
     }
 
-    checkCollisionShapes()
+    checkCollisionShapes() // Проблема не тут
     {
         if (!this.targetShape.active) return;
+
         for (let i = 0; i < this.targetShape.shape.length; i++) {
             for (let j = 0; j < this.targetShape.shape[i].length; j++) {
-                if (this.targetShape.shape[i][j] == 0 
-                    || this.targetShape.position.y + i < 0) continue;
+                if (this.targetShape.position.y + i + 1 < 0 || this.targetShape.position.y + i + 1 >= this.glass.length) continue;
                 if (this.glass[this.targetShape.position.y + i + 1][this.targetShape.position.x + j] == 1)
                 {
-                    this.addShapeInGlass();
+                    this.addShapeInGlass(); // Проблема не тут
                     return true;
                 }
             }
         }
     }
 
-
-    update(lag)
+    checkCollisionBottom()
     {
-        if (this.checkCollisionShapes()) return; // Проверяем колизию перед движения вниз (так-как мы могли двигать фигуру по горизонтали)
-
-        this.targetShape.position.y++;
         if (this.targetShape.position.y + this.targetShape.shape.length == this.glass.length) // Проверка касания дна стакана
         {
             this.addShapeInGlass();
-            return;
         }
+    }
+
+
+    update(lag)
+    {
+        if (!this.targetShape.active) return;
+        if (this.checkCollisionShapes()) return; // Проверяем колизию перед движения вниз (так-как мы могли двигать фигуру по горизонтали)
+        this.checkCollisionBottom();
+        this.targetShape.position.y++;
     }
 
     render()
