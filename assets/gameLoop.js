@@ -13,7 +13,7 @@ export default class GameLoop
 {
     constructor(update, render)
     {
-        this.ms_per_update = 17;    // Интервал между вычислениями
+        this.ms_per_update = 250;    // Интервал между вычислениями
         this.elapsed = 0;            // Счетчик времени между кадрами
         this.currentTime = 0;
         this.pervious = Date.now();
@@ -33,8 +33,6 @@ export default class GameLoop
         this.pervious = this.currentTime;             // Сохраняем время текущего кадра
         this.lag += this.elapsed;                     // Суммированное время между кадрами
 
-        this.update(this.lag);
-        this.lag -= this.elapsed;
         /*
         // При накоплении лагов, змейка начнёт отставать на несколько итераций т.е перемещений
         // с помощью этого цикла мы нагоняем змейку к её нужному положению

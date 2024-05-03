@@ -8,6 +8,7 @@ export default class Input
         document.getElementById("back-button").onclick = () => this.backButton_click();
         document.getElementById("pause-button").onclick = () => this.pause_click();
         document.getElementById("continue-button").onclick = () => this.resume_click();
+        document.getElementById("restart-button").onclick = () => this.restart_click();
 
         document.addEventListener('keydown', (e) => this.setKeydown(e)); 
         document.addEventListener('keyup', (e) => this.setKeyup(e));
@@ -31,6 +32,9 @@ export default class Input
         this.moveXEvent;
         this.rotateEvent;
         this.skipFallEvent;
+        this.extraEvent;
+
+        this.skipButtonClick = false;
     }
 
     backButton_click()
@@ -55,7 +59,7 @@ export default class Input
 
     setKeydown(e)
     {   
-        console.log(e.code);
+        //console.log(e.code);
         if (e.code === "ArrowRight")
         {
             this.moveXEvent(1);
@@ -68,15 +72,23 @@ export default class Input
         {
             this.rotateEvent();
         }
-        if (e.code === "ArrowDown")
+        if (e.code === "ArrowDown" && !this.skipButtonClick)
         {
+            this.skipButtonClick = true;
             this.skipFallEvent();
+        }
+        if (e.code === "KeyD" )
+        {
+            this.extraEvent();
         }
     }
 
     setKeyup(e)
     {
-
+        if (e.code === "ArrowDown")
+        {
+            this.skipButtonClick = false;
+        }
     }
     
 }
