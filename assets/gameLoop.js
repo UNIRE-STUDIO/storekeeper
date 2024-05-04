@@ -13,7 +13,7 @@ export default class GameLoop
 {
     constructor(update, render)
     {
-        this.ms_per_update = 100;    // Интервал между вычислениями
+        this.ms_per_update = 250;    // Интервал между вычислениями
         this.elapsed = 0;            // Счетчик времени между кадрами
         this.currentTime = 0;
         this.pervious = Date.now();

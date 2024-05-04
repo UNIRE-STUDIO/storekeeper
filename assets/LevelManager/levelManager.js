@@ -36,6 +36,8 @@ export default class LevelManager
         input.rotateEvent = this.rotateShape.bind(this);
         input.skipFallEvent = this.skipFall.bind(this);
         input.extraEvent = this.spawnShape.bind(this);
+
+        this.countShape = 0;
     }
 
     
@@ -101,16 +103,15 @@ export default class LevelManager
         // Проверка возможности поворота
         for (let i = 0; i < rotatedShape.length; i++) {
             for (let j = 0; j < rotatedShape[i].length; j++) {
-                if (this.targetShape.position.x + j >= this.glass[0].length
-                    || this.targetShape.position.x + j < 0) return; // проверка пересечения границ стакана
+                if (this.targetShape.position.x + j >= this.glass[0].length || this.targetShape.position.x + j < 0) return; // проверка пересечения границ стакана
                 if (this.targetShape.position.y + i < 0) continue;
                 if (this.glass[this.targetShape.position.y + i][this.targetShape.position.x + j] == 1) return;
             }
         }
-        this.targetShape.shape = rotatedShape;
+        this.targetShape.shape = rotatedShape.slice();
     }
     
-    skipFall() // Проблема не тут
+    skipFall()
     {
         if (this.targetShape.position.y < 0) return;
 
@@ -131,8 +132,6 @@ export default class LevelManager
 
     addShapeInGlass()
     {
-        if (!this.targetShape.active) return;
-        this.targetShape.active = false;
         for (let i = 0; i < this.targetShape.shape.length; i++) {
             for (let j = 0; j < this.targetShape.shape[i].length; j++) {
                 if (this.targetShape.position.y < 0)
@@ -141,7 +140,6 @@ export default class LevelManager
                     return;
                 }
                 this.glass[this.targetShape.position.y + i][this.targetShape.position.x + j] = 1;
-                 // Проблема не тут
             }
         }
 
@@ -156,32 +154,28 @@ export default class LevelManager
                         this.glass[i][k] = 0;
                     }
                     for (let k = i; k > 0; k--) {
-                        this.glass[k] = this.glass[k-1]; // Проблема не тут
+                        this.glass[k] = this.glass[k-1].slice(); // <---- Проблема была тут 
                     }
                 }
             }
         }
         this.spawnShape();
-        // Выполняется один раз
     }
 
-    spawnShape() // Проблема не тут
+    spawnShape()
     {
         this.targetShape.position = {x:7, y: -3}
-        this.targetShape.shape = this.shapes[randomRange(0,this.shapes.length)];
-        this.targetShape.active = true;
+        this.targetShape.shape = this.shapes[randomRange(0,this.shapes.length)].slice();
     }
 
-    checkCollisionShapes() // Проблема не тут
+    checkCollisionShapes()
     {
-        if (!this.targetShape.active) return;
-
         for (let i = 0; i < this.targetShape.shape.length; i++) {
             for (let j = 0; j < this.targetShape.shape[i].length; j++) {
                 if (this.targetShape.position.y + i + 1 < 0 || this.targetShape.position.y + i + 1 >= this.glass.length) continue;
                 if (this.glass[this.targetShape.position.y + i + 1][this.targetShape.position.x + j] == 1)
                 {
-                    this.addShapeInGlass(); // Проблема не тут
+                    this.addShapeInGlass();
                     return true;
                 }
             }
@@ -199,7 +193,6 @@ export default class LevelManager
 
     update(lag)
     {
-        if (!this.targetShape.active) return;
         if (this.checkCollisionShapes()) return; // Проверяем колизию перед движения вниз (так-как мы могли двигать фигуру по горизонтали)
         this.checkCollisionBottom();
         this.targetShape.position.y++;
@@ -219,7 +212,7 @@ export default class LevelManager
 
         // Статичный стакан
         for (let i = 0; i < this.glass.length; i++) {
-            for (let j = 0; j < this.glass[i].length; j++) {
+           for (let j = 0; j < this.glass[i].length; j++) {
                 if (this.glass[i][j] == 0) continue;
                 let drawPos = { x: j * this.config.grid, y: i * this.config.grid};
                 drawRect(this.config.ctx, drawPos, {x: this.config.grid-1, y: this.config.grid-1}, "#fff");
