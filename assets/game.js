@@ -13,11 +13,8 @@ export default class Game
         this.config = new Config();
         this.ui_controller = new UI_Controller(this.config);
         this.currentScreen;
-        this.changeScreen(0);
 
         this.saveManager = new SaveManager(); 
-
-        new GameLoop(this.update.bind(this), this.render.bind(this));
 
         this.input = new Input();
         this.input.changeScreenEvent = this.changeScreen.bind(this);
@@ -26,6 +23,11 @@ export default class Game
         this.levelManager = new LevelManager(this.input, this.config); // Создавать сразу?
         this.levelManager.gameOverEvent = this.changeScreen.bind(this, GameScreens.GAMEOVER);
         this.levelManager.saveManager = this.saveManager;
+
+        this.changeScreen(0);
+
+        new GameLoop(this.update.bind(this), this.render.bind(this));
+
     }
 
     // изменить экран игры на указанный + дополнительный параметр для уточнения поведения
@@ -35,8 +37,9 @@ export default class Game
         if (screen != -1) this.ui_controller.turnOnSection(screen);
         switch (screen) {
             case GameScreens.MENU:
+                this.levelManager.setReset();
+
                 this.currentScreen = GameScreens.MENU;
-                console.log("menu");
             break;
             case GameScreens.PLAY:
                 if (parameter == 1) this.levelManager.setRestart();
@@ -74,7 +77,6 @@ export default class Game
 
     render(lag)
     {
-        if (this.currentScreen == GameScreens.MENU) return;
         this.config.ctx.clearRect(0, 0, this.config.canvas.width, this.config.canvas.height);
 
         this.levelManager.render();

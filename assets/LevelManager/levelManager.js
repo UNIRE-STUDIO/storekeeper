@@ -5,8 +5,10 @@ export default class LevelManager
 {
     constructor(input, config)
     {
+        this.currentScreen;
         this.config = config;
         this.score = 0;
+        this.amountLine = 0;
         this.isPause = false;
 
         // Присваивает класс Game
@@ -27,6 +29,7 @@ export default class LevelManager
         this.targetShape = 
         {
             shape: [],
+            nextShape: [],
             position: {x: 0, y: 0},
             active: false
         };
@@ -37,13 +40,29 @@ export default class LevelManager
         input.skipFallEvent = this.skipFall.bind(this);
         input.extraEvent = this.spawnShape.bind(this);
 
-        this.countShape = 0;
+        this.nextShapeParent = document.getElementById("next-shape");
+        this.amountLineLabel = document.getElementById("amount-line-label");
+        this.scoreLabel = document.getElementById("score-label");
     }
 
     
     setPause()
     {
         this.isPause = true;
+    }
+
+    setReset()
+    {
+        this.score = 0;
+        for (let i = 0; i < this.config.sizeMap.y; i++) {
+            this.glass[i] = [];
+            for (let j = 0; j < this.config.sizeMap.x; j++) {
+                this.glass[i][j] = 0;
+            }
+        }
+        this.nextShapeParent.innerHTML = "";
+        this.targetShape.shape = [];
+        this.addAmountLine(0);
     }
 
     setResume()
@@ -58,26 +77,31 @@ export default class LevelManager
 
     gameOver()
     {
-        console.log("game-over");
         this.gameOverEvent();
     }    
     
     start()
     {
-        this.score = 0;
+        this.setReset();
         this.isPause = false;
-        for (let i = 0; i < this.config.sizeMap.y; i++) {
-            this.glass[i] = [];
-            for (let j = 0; j < this.config.sizeMap.x; j++) {
-                this.glass[i][j] = 0;
-            }
-        }
+        this.targetShape.nextShape = this.shapes[randomRange(0,this.shapes.length)].slice();
         this.spawnShape();
+    }
+
+    addAmountLine(amount)
+    {                       // За одну линию 10 * 1 * 1 = 10 // За две линии 10 * 2 * 2 = 40
+        let added = (amount - this.amountLine) < 0 ? 0 : (amount - this.amountLine);
+        this.score += 10 * added * added;
+        this.scoreLabel.innerHTML = "" + this.score;
+
+        this.amountLine = amount;
+        this.amountLineLabel.innerHTML = "" + amount;
     }
 
     moveX(dir)
     {
-        if (dir < 0 && this.targetShape.position.x == 0
+        if (this.isPause 
+            || dir < 0 && this.targetShape.position.x == 0
             || dir > 0 && this.targetShape.position.x + this.targetShape.shape[0].length == this.glass[0].length) return; // Если делать тетрис с классическими фигурами, нужно переделать
             
             for (let i = 0; i < this.targetShape.shape.length; i++) {
@@ -91,6 +115,7 @@ export default class LevelManager
 
     rotateShape()
     {
+        if (this.isPause) return;
         let rotatedShape = [];
         for (let i = 0; i < this.targetShape.shape.length; i++) 
         {                                                               //        [[1,1,1] [1,1,1]]
@@ -113,7 +138,7 @@ export default class LevelManager
     
     skipFall()
     {
-        if (this.targetShape.position.y < 0) return;
+        if (this.isPause || this.targetShape.position.y < 0) return;
 
         for (let i = this.targetShape.position.y; i < this.glass.length; i++) 
         {
@@ -143,6 +168,7 @@ export default class LevelManager
             }
         }
 
+        let amountLinePerMove = 0;
         checki: for (let i = this.targetShape.position.y; i < this.glass.length; i++) { //Удалениие линии и перемещения линий на одну позицию вниз
             for (let j = 0; j < this.glass[0].length; j++) {
                 if (this.glass[i][j] == 0){
@@ -156,16 +182,32 @@ export default class LevelManager
                     for (let k = i; k > 0; k--) {
                         this.glass[k] = this.glass[k-1].slice(); // <---- Проблема была тут 
                     }
+                    amountLinePerMove++;
                 }
             }
         }
+
+        this.addAmountLine(this.amountLine + amountLinePerMove);
         this.spawnShape();
     }
 
     spawnShape()
     {
-        this.targetShape.position = {x:7, y: -3}
-        this.targetShape.shape = this.shapes[randomRange(0,this.shapes.length)].slice();
+        this.targetShape.position = {x:7, y: -3};
+        this.targetShape.shape = this.targetShape.nextShape.slice();
+        this.targetShape.nextShape = this.shapes[randomRange(0,this.shapes.length)].slice();
+
+        this.nextShapeParent.innerHTML = "";
+        for (let i = 0; i < this.targetShape.nextShape.length; i++) {
+            let hor = document.createElement('div');
+            hor.className = "next-shape-horizontal";
+            for (let j = 0; j < this.targetShape.nextShape[i].length; j++) {
+                let element = document.createElement('div');
+                element.className = "next-shape-elements";
+                hor.append(element);
+            }
+            this.nextShapeParent.append(hor);
+        }
     }
 
     checkCollisionShapes()
@@ -206,7 +248,7 @@ export default class LevelManager
                 if (this.targetShape.shape[i][j] == 0) continue;                    // +2 Что-бы образовать отступ
                 let drawPos = { x: this.targetShape.position.x * this.config.grid + j * this.config.grid, 
                                 y: this.targetShape.position.y * this.config.grid + i * this.config.grid};
-                drawRect(this.config.ctx, drawPos, {x: this.config.grid-1, y: this.config.grid-1}, "#f33");
+                drawRect(this.config.ctx, drawPos, {x: this.config.grid-1, y: this.config.grid-1}, "#ff3535");
             }
         }
 

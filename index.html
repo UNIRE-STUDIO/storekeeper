@@ -30,17 +30,15 @@
             <div id="central-part">
                 <div id="header-panel">
                     <div class="back-button-wrapper">
-                        <button class="button" id="home-button" name="home" type="button">⌂</button>
-                        <button class="button" id="back-button" name="back" type="button">⬅</button>
-                        <button class="button" id="pause-button" name="pause" type="button">❚❚</button>
+                        <button class="button header-buttons" id="home-button" name="home" type="button">⌂</button>
+                        <button class="button header-buttons" id="back-button" name="back" type="button">⬅</button>
+                        <button class="button header-buttons" id="pause-button" name="pause" type="button">❚❚</button>
                     </div>
                     <div class="h-wrapper">
-                        <p id="menu-lable">КЛАДОВЩИК</p>
-                        <p id="score-lable">0</p>
-                        <p id="game-over-lable">Проигрышь</p>
+                        <p>КЛАДОВЩИК</p>
                     </div>
                     <div class="right-part">
-                        <p id="sublevel-lable">Уровень 1/10</p>
+                        <p id="sublevel-label">Уровень 1/10</p>
                     </div>
                 </div>
                 <!-- ----------------------------------------- -->
@@ -52,11 +50,11 @@
                         </div>
                         <div id="game-wrapper">
                         </div>
-                        <div id="pause-wrapper">
+                        <div class="wrappers" id="pause-wrapper">
                             <p class="panel-label">Пауза</p>
                             <button class="button" id="continue-button" name="continue" type="button">ПРОДОЛЖИТЬ</button> 
                         </div>
-                        <div id="game-over-wrapper">
+                        <div class="wrappers" id="game-over-wrapper">
                             <p class="panel-label" id="you-lose">Вы проиграли</p>
                             <button class="button" id="restart-button" name="restart" type="button">РЕСТАРТ</button>
                         </div>
@@ -68,7 +66,19 @@
                 </div>
             </div>
             <div id="side-part">
-
+                <div id="score-wrapper">
+                    <p>Очки</p>
+                    <p id="score-label">0</p>
+                </div>
+                <div id="amount-line-wrapper">
+                    <p>Убрано</p>
+                    <p id="amount-line-label">0</p>
+                </div>
+                <div id="next-shape-wrapper">
+                    <p id="next-shape-label">Следующая</p>
+                    <div id="next-shape"></div>
+                </div>
+                <div></div>
             </div>
         </div>
         <script type="module" src="assets/game.js"></script>

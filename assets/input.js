@@ -12,6 +12,8 @@ export default class Input
 
         document.addEventListener('keydown', (e) => this.setKeydown(e)); 
         document.addEventListener('keyup', (e) => this.setKeyup(e));
+
+        document.getElementById('home-button').onclick = () => window.location.href = "http://unire.su";
         
         // Отменяем действие при фокусировке
         //document.getElementById("key-b").addEventListener('keydown', e => {if (e.code == "Enter") e.preventDefault();});

@@ -8,18 +8,15 @@ export default class UI_Controller
     {
         this.currentSection;
         this.ui_elements = [
-            new UI_Element([document.getElementById("menu-lable"),  // Меню
-                            document.getElementById("menu-wrapper"),
+            new UI_Element([document.getElementById("menu-wrapper"),            // Меню
                             document.getElementById("home-button")],true),
             new UI_Element([document.getElementById("game-wrapper"),          // Интерфейс игры
-                            document.getElementById("pause-button"),
-                            document.getElementById("score-lable")]),
+                            document.getElementById("pause-button")]),
             new UI_Element([document.getElementById("pause-wrapper"),           // Пауза
                             document.getElementById("back-button")]),       
             new UI_Element([document.getElementById("back-button"),           // Проигрышь
-                            document.getElementById("game-over-wrapper"),
-                            document.getElementById("game-over-lable")])
-                                                                        ];                                              
+                            document.getElementById("game-over-wrapper")])
+                            ];                                              
         
         this.config = config;
         this.canvas = document.getElementById('myCanvas');
