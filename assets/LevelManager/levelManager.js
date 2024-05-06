@@ -50,6 +50,8 @@ export default class LevelManager
         this.nextShapeParent = document.getElementById("next-shape");
         this.amountLineLabel = document.getElementById("amount-line-label");
         this.scoreLabel = document.getElementById("score-label");
+        this.levelLabel = document.getElementById("level-label");
+        this.recordLabel = document.getElementById("record-label");
     }
 
     
@@ -67,9 +69,12 @@ export default class LevelManager
                 this.glass[i][j] = 0;
             }
         }
+        this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 2);
         this.nextShapeParent.innerHTML = "";
         this.targetShape.shape = [];
         this.addAmountLine(0);
+        this.recordLabel.innerHTML = "" + this.saveManager.record;
+        this.recordLabel.style.color = "#c2c2c2";
     }
 
     setResume()
@@ -108,6 +113,12 @@ export default class LevelManager
             if (this.levels[i][0] <= amount && i > this.currentLevel){
                 this.setMsPerUpdate(this.levels[i][1]);
                 this.currentLevel = i;
+                this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 2);
+                if (this.score > this.saveManager.record){
+                    this.saveManager.saveRecord(this.score);
+                    this.recordLabel.innerHTML = "" + this.saveManager.record;
+                    this.recordLabel.style.color = "yellow";
+                } 
                 break;
             }
         }

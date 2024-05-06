@@ -93,6 +93,7 @@ body{
 #next-shape-wrapper{
     font-size: 16px;
     text-align: center;
+    height: 160px;
 }
 
 .next-shape-horizontal{
@@ -100,7 +101,7 @@ body{
     justify-content: center;
 }
 .next-shape-elements{
-    background: #ff3535;
+    background: #D69389;
     margin: 1px;
     width: 32px;
     height: 32px;

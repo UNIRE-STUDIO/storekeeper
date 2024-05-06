@@ -2,26 +2,26 @@ export default class SaveManager
 {
     constructor()
     {
-        this.records;
+        this.record;
         this.loadSave();
     }
 
     loadSave()
     {
-        if (JSON.parse(localStorage.getItem("mathSave")) == undefined)
+        if (JSON.parse(localStorage.getItem("storekeeperSave")) == undefined)
         {
-            this.records = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-            localStorage.setItem("mathSave", JSON.stringify(this.records));
+            this.record = 0;
+            localStorage.setItem("storekeeperSave", 0);
         }
         else
         {
-            this.records = JSON.parse(localStorage.getItem("mathSave"));
+            this.record = localStorage.getItem("storekeeperSave");
         }
     }
 
-    saveRecords(newRecords)
+    saveRecord(newRecord)
     {
-        this.records = newRecords;
-        localStorage.setItem("mathSave", JSON.stringify(this.records));
+        this.record = newRecord;
+        localStorage.setItem("storekeeperSave", this.record);
     }
 }
