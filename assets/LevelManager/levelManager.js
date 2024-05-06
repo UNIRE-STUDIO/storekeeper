@@ -14,6 +14,7 @@ export default class LevelManager
         // Присваивает класс Game
         this.gameOverEvent;
         this.saveManager;
+        this.setMsPerUpdate;
 
         this.shapes = [
             [[1,1],
@@ -34,6 +35,12 @@ export default class LevelManager
             active: false
         };
         this.glass = [];
+        this.levels = [
+            [10, 250],      // Кол-во убраных линий, ms_per_update
+            [30, 230],
+            [40, 210]
+        ];
+        this.currentLevel = -1;
 
         input.moveXEvent = this.moveX.bind(this);
         input.rotateEvent = this.rotateShape.bind(this);
@@ -96,6 +103,14 @@ export default class LevelManager
 
         this.amountLine = amount;
         this.amountLineLabel.innerHTML = "" + amount;
+        
+        for (let i = this.levels.length-1; i >= 0; i--) {
+            if (this.levels[i][0] <= amount && i > this.currentLevel){
+                this.setMsPerUpdate(this.levels[i][1]);
+                this.currentLevel = i;
+                break;
+            }
+        }
     }
 
     moveX(dir)
@@ -242,23 +257,67 @@ export default class LevelManager
 
     render()
     {
-        // Активная фигура
-        for (let i = 0; i < this.targetShape.shape.length; i++) {
-            for (let j = 0; j < this.targetShape.shape[i].length; j++) {
-                if (this.targetShape.shape[i][j] == 0) continue;                    // +2 Что-бы образовать отступ
-                let drawPos = { x: this.targetShape.position.x * this.config.grid + j * this.config.grid, 
-                                y: this.targetShape.position.y * this.config.grid + i * this.config.grid};
-                drawRect(this.config.ctx, drawPos, {x: this.config.grid-1, y: this.config.grid-1}, "#ff3535");
-            }
-        }
+        let mainPartPos = [];
+        let upPartPos = [];
+        let sidePartPos = [];
 
         // Статичный стакан
         for (let i = 0; i < this.glass.length; i++) {
            for (let j = 0; j < this.glass[i].length; j++) {
                 if (this.glass[i][j] == 0) continue;
                 let drawPos = { x: j * this.config.grid, y: i * this.config.grid};
-                drawRect(this.config.ctx, drawPos, {x: this.config.grid-1, y: this.config.grid-1}, "#fff");
+                mainPartPos.push(drawPos);
+
+                let drawPosExtra = Object.assign({}, drawPos); // Пеовый параметр не предотвращает мутацию, поэтому используем второй
+                drawPosExtra.x += this.config.grid;
+                drawPosExtra.y += drawPosExtra.x;
+                sidePartPos.push(drawPosExtra);
+
+                if (i-1 >= 0 && this.glass[i-1][j] == 1) continue;
+                drawPosExtra = Object.assign({}, drawPos);
+                drawPosExtra.x += drawPosExtra.y;
+                drawPosExtra.y -= 8;
+                upPartPos.push(drawPosExtra);
             }
         }
+
+        // Активная фигура
+        for (let i = 0; i < this.targetShape.shape.length; i++) {
+            for (let j = 0; j < this.targetShape.shape[i].length; j++) {
+                if (this.targetShape.shape[i][j] == 0) continue;
+                let drawPos = { x: this.targetShape.position.x * this.config.grid + j * this.config.grid, 
+                                y: this.targetShape.position.y * this.config.grid + i * this.config.grid};
+                mainPartPos.push(drawPos);
+                
+                let drawPosExtra = Object.assign({}, drawPos); // Пеовый параметр не предотвращает мутацию, поэтому используем второй
+                drawPosExtra.x += this.config.grid;
+                drawPosExtra.y += drawPosExtra.x;
+                sidePartPos.push(drawPosExtra);
+                
+                if (i > 0) continue; // Крышки отображаем только на верхних объектах
+                drawPosExtra = Object.assign({}, drawPos);
+                drawPosExtra.x += drawPosExtra.y;
+                drawPosExtra.y -= 8;
+                upPartPos.push(drawPosExtra);
+            }
+        }
+        for (let i = 0; i < sidePartPos.length; i++) { // Рисуем правую боковинку
+            this.config.ctx.save();
+            this.config.ctx.transform(1, -1, 0, 1, 0, 0); 
+            drawRect(this.config.ctx, sidePartPos[i], {x: 8, y: this.config.grid}, "#B96D5F");
+            this.config.ctx.restore();
+        }
+        for (let i = 0; i < upPartPos.length; i++) { // Рисуем верхнюю крышку
+            this.config.ctx.save();
+            this.config.ctx.transform(1, 0, -1, 1, 0, 0); //this.config.ctx.transform(1, 0, 0, 1, 0, 0); - "Положение по умолчанию"
+            drawRect(this.config.ctx, upPartPos[i], {x: this.config.grid, y: 8}, "#E9AEA4");
+            this.config.ctx.restore();
+        }
+        for (let i = 0; i < mainPartPos.length; i++) { // Рисуем основную часть
+            drawRect(this.config.ctx, mainPartPos[i], {x: this.config.grid, y: this.config.grid}, "#D69389");
+        }
     }
+    //this.config.ctx.globalCompositeOperation = "destination-over"; // Отображает позади других фигур
+    //this.config.ctx.transform(1, 0, 0, 1, 0, 0); - "Положение по умолчанию"
+
 }

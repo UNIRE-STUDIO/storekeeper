@@ -20,8 +20,8 @@ export default class UI_Controller
         
         this.config = config;
         this.canvas = document.getElementById('myCanvas');
-        this.canvas.width = this.config.grid * this.config.sizeMap.x;
-        this.canvas.height = this.config.grid * this.config.sizeMap.y;
+        this.canvas.width = this.config.grid * (this.config.sizeMap.x) + 8;
+        this.canvas.height = this.config.grid * (this.config.sizeMap.y);
         document.getElementById('size-map').innerHTML = this.config.sizeMap.x + "x" + this.config.sizeMap.y; 
         document.getElementById('content-center-wrapper').style.height = this.canvas.height;
         document.getElementById('central-part').style.width = this.canvas.width;

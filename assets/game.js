@@ -26,8 +26,8 @@ export default class Game
 
         this.changeScreen(0);
 
-        new GameLoop(this.update.bind(this), this.render.bind(this));
-
+        this.gameLoop = new GameLoop(this.update.bind(this), this.render.bind(this));
+        this.levelManager.setMsPerUpdate = this.gameLoop.setMsPerUpdate.bind(this.gameLoop);
     }
 
     // изменить экран игры на указанный + дополнительный параметр для уточнения поведения
