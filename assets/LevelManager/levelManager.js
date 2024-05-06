@@ -36,11 +36,13 @@ export default class LevelManager
         };
         this.glass = [];
         this.levels = [
+            [0, 270],
             [10, 250],      // Кол-во убраных линий, ms_per_update
             [30, 230],
-            [40, 210]
+            [40, 210],
+            [50, 190]
         ];
-        this.currentLevel = -1;
+        this.currentLevel = 0;
 
         input.moveXEvent = this.moveX.bind(this);
         input.rotateEvent = this.rotateShape.bind(this);
@@ -69,12 +71,14 @@ export default class LevelManager
                 this.glass[i][j] = 0;
             }
         }
-        this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 2);
         this.nextShapeParent.innerHTML = "";
         this.targetShape.shape = [];
         this.addAmountLine(0);
         this.recordLabel.innerHTML = "" + this.saveManager.record;
         this.recordLabel.style.color = "#c2c2c2";
+        this.currentLevel = 0;
+        this.setMsPerUpdate(this.levels[this.currentLevel][1]);
+        this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 1);
     }
 
     setResume()
@@ -113,15 +117,16 @@ export default class LevelManager
             if (this.levels[i][0] <= amount && i > this.currentLevel){
                 this.setMsPerUpdate(this.levels[i][1]);
                 this.currentLevel = i;
-                this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 2);
-                if (this.score > this.saveManager.record){
-                    this.saveManager.saveRecord(this.score);
-                    this.recordLabel.innerHTML = "" + this.saveManager.record;
-                    this.recordLabel.style.color = "yellow";
-                } 
+                this.levelLabel.innerHTML = "Уровень " + (this.currentLevel + 1);
                 break;
             }
         }
+
+        if (this.score > this.saveManager.record){
+            this.saveManager.saveRecord(this.score);
+            this.recordLabel.innerHTML = "" + this.saveManager.record;
+            this.recordLabel.style.color = "yellow";
+        } 
     }
 
     moveX(dir)
@@ -308,20 +313,20 @@ export default class LevelManager
                 if (i > 0) continue; // Крышки отображаем только на верхних объектах
                 drawPosExtra = Object.assign({}, drawPos);
                 drawPosExtra.x += drawPosExtra.y;
-                drawPosExtra.y -= 8;
+                drawPosExtra.y -= this.config.quarterGrid;
                 upPartPos.push(drawPosExtra);
             }
         }
         for (let i = 0; i < sidePartPos.length; i++) { // Рисуем правую боковинку
             this.config.ctx.save();
             this.config.ctx.transform(1, -1, 0, 1, 0, 0); 
-            drawRect(this.config.ctx, sidePartPos[i], {x: 8, y: this.config.grid}, "#B96D5F");
+            drawRect(this.config.ctx, sidePartPos[i], {x: this.config.quarterGrid, y: this.config.grid}, "#B96D5F");
             this.config.ctx.restore();
         }
         for (let i = 0; i < upPartPos.length; i++) { // Рисуем верхнюю крышку
             this.config.ctx.save();
             this.config.ctx.transform(1, 0, -1, 1, 0, 0); //this.config.ctx.transform(1, 0, 0, 1, 0, 0); - "Положение по умолчанию"
-            drawRect(this.config.ctx, upPartPos[i], {x: this.config.grid, y: 8}, "#E9AEA4");
+            drawRect(this.config.ctx, upPartPos[i], {x: this.config.grid, y: this.config.quarterGrid}, "#E9AEA4");
             this.config.ctx.restore();
         }
         for (let i = 0; i < mainPartPos.length; i++) { // Рисуем основную часть

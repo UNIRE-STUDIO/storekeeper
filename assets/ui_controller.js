@@ -20,8 +20,18 @@ export default class UI_Controller
         
         this.config = config;
         this.canvas = document.getElementById('myCanvas');
+        
+        // Чтобы надёжно получить полную высоту документа, нам следует взять максимальное из этих свойств:
+        // let scrollHeight = Math.max(
+        //     document.body.scrollHeight, document.documentElement.scrollHeight,
+        //     document.body.offsetHeight, document.documentElement.offsetHeight,
+        //     document.body.clientHeight, document.documentElement.clientHeight
+        //   );
+        if (window.innerHeight < 660) this.config.grid = 24;
+        
         this.canvas.width = this.config.grid * (this.config.sizeMap.x) + 8;
         this.canvas.height = this.config.grid * (this.config.sizeMap.y);
+        this.canvas.style.backgroundSize = this.config.grid + "px " + this.config.grid + "px";
         document.getElementById('size-map').innerHTML = this.config.sizeMap.x + "x" + this.config.sizeMap.y; 
         document.getElementById('content-center-wrapper').style.height = this.canvas.height;
         document.getElementById('central-part').style.width = this.canvas.width;

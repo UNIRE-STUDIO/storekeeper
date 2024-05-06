@@ -24,10 +24,10 @@ export default class Game
         this.levelManager.gameOverEvent = this.changeScreen.bind(this, GameScreens.GAMEOVER);
         this.levelManager.saveManager = this.saveManager;
 
-        this.changeScreen(0);
-
         this.gameLoop = new GameLoop(this.update.bind(this), this.render.bind(this));
         this.levelManager.setMsPerUpdate = this.gameLoop.setMsPerUpdate.bind(this.gameLoop);
+
+        this.changeScreen(0);
     }
 
     // изменить экран игры на указанный + дополнительный параметр для уточнения поведения
@@ -53,7 +53,7 @@ export default class Game
                 this.currentScreen = GameScreens.PAUSE;
             break;
             case GameScreens.GAMEOVER:
-
+                this.levelManager.setPause();
                 this.currentScreen = GameScreens.GAMEOVER;
             break;
             case -1: // Если нажата кнопка назад
