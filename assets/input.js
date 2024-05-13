@@ -34,9 +34,31 @@ export default class Input
         this.moveXEvent;
         this.rotateEvent;
         this.skipFallEvent;
-        this.extraEvent;
 
         this.skipButtonClick = false;
+
+        document.addEventListener('touchstart', (e) => {
+            let xTouchPos = e.changedTouches[0].clientX;
+            let yTouchPos = e.changedTouches[0].clientY;
+
+            if (yTouchPos < window.innerHeight/3*2) return;
+            if (xTouchPos < window.innerWidth / 3) // Левая треть экрана
+            {
+                this.moveXEvent(-1);
+            }
+            else if (xTouchPos > window.innerWidth / 3 * 2) // Правая треть экрана
+            {
+                this.moveXEvent(1);
+            }
+            else if (xTouchPos > window.innerWidth / 3 && yTouchPos > window.innerHeight/6*5)
+            {
+                this.skipFallEvent();
+            }
+            else if (xTouchPos > window.innerWidth / 3 && yTouchPos > window.innerHeight/6*4)
+            {
+                this.rotateEvent();
+            }
+        });
     }
 
     backButton_click()
@@ -62,26 +84,22 @@ export default class Input
     setKeydown(e)
     {   
         //console.log(e.code);
-        if (e.code === "ArrowRight")
+        if (e.code === "ArrowRight" || e.code === "KeyD")
         {
             this.moveXEvent(1);
         }
-        if (e.code === "ArrowLeft")
+        if (e.code === "ArrowLeft" || e.code === "KeyA")
         {
             this.moveXEvent(-1);
         }
-        if (e.code === "ArrowUp" || e.code === "Space")
+        if (e.code === "ArrowUp" || e.code === "Space" || e.code === "KeyW")
         {
             this.rotateEvent();
         }
-        if (e.code === "ArrowDown" && !this.skipButtonClick)
+        if ((e.code === "ArrowDown" || e.code === "KeyS") && !this.skipButtonClick)
         {
             this.skipButtonClick = true;
             this.skipFallEvent();
-        }
-        if (e.code === "KeyD" )
-        {
-            this.extraEvent();
         }
     }
 

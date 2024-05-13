@@ -3,14 +3,14 @@
     <head>
         <meta charset="utf-8"/>
         <title>Кладовщик</title>
+        <link rel="stylesheet" href="assets/general.css">
         <script>
             let cssId = 'myCss';  // you could encode the css path itself to generate id..
             const main = 'assets/main.css';
-            const mobileStyle = 'assets/main.css';
+            const mobileStyle = 'assets/mobile.css';
 
             // В зависимости от устройства подключаем разные таблицы стилей
-            var uagent = navigator.userAgent.toLowerCase();
-            let currentStyle = (uagent.search("android") > -1) ? mobileStyle : main;
+            let currentStyle = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ? mobileStyle : main;
             if (!document.getElementById(cssId))
                 {
                     var head  = document.getElementsByTagName('head')[0];
@@ -31,9 +31,9 @@
             <div id="central-part">
                 <div id="header-panel">
                     <div class="back-button-wrapper">
-                        <button class="button header-buttons" id="home-button" name="home" type="button">⌂</button>
-                        <button class="button header-buttons" id="back-button" name="back" type="button">⬅</button>
-                        <button class="button header-buttons" id="pause-button" name="pause" type="button">❚❚</button>
+                        <button class="button header-buttons medium" id="home-button" name="home" type="button">⌂</button>
+                        <button class="button header-buttons medium" id="back-button" name="back" type="button">⬅</button>
+                        <button class="button header-buttons medium" id="pause-button" name="pause" type="button">❚❚</button>
                     </div>
                     <div class="h-wrapper">
                         <p>КЛАДОВЩИК</p>
@@ -47,35 +47,35 @@
                     <canvas id="myCanvas"></canvas>
                     <div id="content-center-wrapper">
                         <div class="panel-wrapper" id="menu-wrapper">
-                            <button class="button" id="start-button" name="continue" type="button">НАЧАТЬ ИГРУ</button> 
+                            <button class="button medium" id="start-button" name="continue" type="button">НАЧАТЬ ИГРУ</button> 
                         </div>
                         <div id="game-wrapper">
                         </div>
                         <div class="wrappers" id="pause-wrapper">
-                            <p class="panel-label">Пауза</p>
-                            <button class="button" id="continue-button" name="continue" type="button">ПРОДОЛЖИТЬ</button> 
+                            <p class="panel-label large">Пауза</p>
+                            <button class="button medium" id="continue-button" name="continue" type="button">ПРОДОЛЖИТЬ</button> 
                         </div>
                         <div class="wrappers" id="game-over-wrapper">
-                            <p class="panel-label" id="you-lose">Вы проиграли</p>
-                            <button class="button" id="restart-button" name="restart" type="button">РЕСТАРТ</button>
+                            <p class="panel-label large" id="you-lose">Вы проиграли</p>
+                            <button class="button medium" id="restart-button" name="restart" type="button">РЕСТАРТ</button>
                         </div>
                     </div>
                     <div class="footer">
                         <span class="footer-label" id="size-map"></span>
-                        <span class="footer-label" id="version">версия: 0.1</span>
+                        <span class="footer-label" id="version">версия: 0.2</span>
                     </div>
                 </div>
             </div>
             <div id="side-part">
-                <div id="record-wrapper">
+                <div class="side-wrappers" id="record-wrapper">
                     <p>Рекорд</p>
                     <p id="record-label">0</p>
                 </div>
-                <div id="score-wrapper">
+                <div class="side-wrappers" id="score-wrapper">
                     <p>Очки</p>
                     <p id="score-label">0</p>
                 </div>
-                <div id="amount-line-wrapper">
+                <div class="side-wrappers" id="amount-line-wrapper">
                     <p>Убрано</p>
                     <p id="amount-line-label">0</p>
                 </div>

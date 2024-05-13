@@ -27,7 +27,6 @@ export default class UI_Controller
         //     document.body.offsetHeight, document.documentElement.offsetHeight,
         //     document.body.clientHeight, document.documentElement.clientHeight
         //   );
-        if (window.innerHeight < 660) this.config.grid = 24;
         
         this.canvas.width = this.config.grid * (this.config.sizeMap.x) + 8;
         this.canvas.height = this.config.grid * (this.config.sizeMap.y);

@@ -1,0 +1,132 @@
+/* Общие классы */
+.panel {
+    padding: 20px;
+    color: #dfdfdf;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 15px;
+    background: #97979e91;
+}
+
+.panel-label{
+    padding: 10px;
+    color: #c2c2c2;
+    z-index: 1;
+    text-align: center;
+    margin: 10px;
+}
+
+.button {
+    margin: 5px;
+    border-radius: 15px;
+    background: #dfdfe6dc;
+    border: none;
+    color: #333333;
+    padding: 16px 20px;
+    -moz-user-select: none;    -o-user-select: none;    -khtml-user-select: none;    -webkit-user-select: none;    user-select: none;
+    z-index: 1;
+}
+
+.header-buttons{
+    font-weight: bold;
+    padding: 10px 14px;
+}
+
+.panel-wrapper{
+    padding: 0 5vw;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ------------------------*/
+
+body{
+    margin: 0px;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #c2c2c2;
+}
+
+#page {
+    background-color: #161618;
+    display: flex;
+}
+
+/* ------------------------*/
+
+#side-part{
+    padding-left: 20px;
+    text-align: center;
+}
+
+#next-shape-wrapper{
+    text-align: center;
+    height: 160px;
+}
+
+.next-shape-horizontal{
+    display: flex;
+    justify-content: center;
+}
+.next-shape-elements{
+    background: #D69389;
+    margin: 1px;
+    width: 32px;
+    height: 32px;
+}
+
+/* ------------------------*/
+
+#content-center-wrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#header-panel{
+    padding: 16px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ------------------------*/
+
+#myCanvas {
+    background-position: 8px -8px;
+    background-size: 32px 32px;
+    background-color: #2d2d2d;
+
+    position: absolute;
+    z-index: 0;
+}
+
+/* ------------------------*/
+
+.wrappers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1;
+    border-radius: 40px;
+    background: #1b1b1bbe;
+    padding: 20px 0;
+    margin: 20px;
+}
+
+/* -----game-over--------*/
+
+.footer {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    color: #747474;
+}

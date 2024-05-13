@@ -47,7 +47,6 @@ export default class LevelManager
         input.moveXEvent = this.moveX.bind(this);
         input.rotateEvent = this.rotateShape.bind(this);
         input.skipFallEvent = this.skipFall.bind(this);
-        input.extraEvent = this.spawnShape.bind(this);
 
         this.nextShapeParent = document.getElementById("next-shape");
         this.amountLineLabel = document.getElementById("amount-line-label");
