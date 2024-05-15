@@ -223,9 +223,21 @@ export default class LevelManager
 
     spawnShape()
     {
-        this.targetShape.position = {x:7, y: -3};
+        this.targetShape.position = {x:Math.abs(this.config.sizeMap.x/2), y: -3};
         this.targetShape.shape = this.targetShape.nextShape.slice();
         this.targetShape.nextShape = this.shapes[randomRange(0,this.shapes.length)].slice();
+        if (randomRange(0,2) == 0){
+            let rotatedShape = [];
+            for (let i = 0; i < this.targetShape.nextShape.length; i++) 
+            {                                                               //        [[1,1,1] [1,1,1]]
+                for (let j = 0; j < this.targetShape.nextShape[i].length; j++)  //        [[1,1] [1,1] [1,1]]
+                {
+                    rotatedShape[j] = [];
+                    rotatedShape[j][i] = this.targetShape.nextShape[i][j];
+                }
+            }
+            this.targetShape.nextShape = rotatedShape.slice();
+        }
 
         this.nextShapeParent.innerHTML = "";
         for (let i = 0; i < this.targetShape.nextShape.length; i++) {
