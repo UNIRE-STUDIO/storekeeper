@@ -223,7 +223,7 @@ export default class LevelManager
 
     spawnShape()
     {
-        this.targetShape.position = {x:Math.abs(this.config.sizeMap.x/2), y: -3};
+        this.targetShape.position = {x:Math.round(this.config.sizeMap.x/2)-1, y: -3};
         this.targetShape.shape = this.targetShape.nextShape.slice();
         this.targetShape.nextShape = this.shapes[randomRange(0,this.shapes.length)].slice();
         if (randomRange(0,2) == 0){
